@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .grid-container {
+            /* background-color: #e77777; */
+            width: 50%;
+            aspect-ratio: 1/1;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 7px;
+            padding: 10px;
+        }
+
+        .btn-inside {
+            background-color: #a87fe4;
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 20px;
+            border: 0;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="grid-container"></div>
+
+    <script>
+        // global variables
+        let gridContainer = document.querySelector('.grid-container');
+        let btnInside = document.querySelectorAll('.btn-inside');
+        let correctBtn;
+        let gridSize = 2;
+        let levelCount = 0;
+
+        function createBtns(gridSize) {
+            //clear gridContainer
+            gridContainer.innerHTML = '';
+            // change the num of the btns
+            gridContainer.style.gridTemplateColumns = `repeat(${gridSize},1fr)`;
+            // create btns
+            for (let i = 0; i < gridSize * gridSize; i++) {
+                // create a btn after gridContainer
+                let newBlock = document.createElement('button');
+                newBlock.classList.add('btn-inside');
+                gridContainer.appendChild(newBlock);
+            };
+
+        };
+        
+        function selectBtn() {
+            btnInside = document.querySelectorAll('.btn-inside');
+            // choose a btn from btnInside (NodeList)
+            let chooseBtn = Math.floor(Math.random() * btnInside.length);
+            correctBtn = btnInside[chooseBtn];
+            // change the bgc of the chosen btn
+            correctBtn.style.backgroundColor = '#572A3F';
+            console.log(chooseBtn);
+            // console.log(btnInside.length);
+        };
+
+        function addListener() {
+            // add listener on every btn
+            btnInside.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    // if correctBtn is clicked move on to next level
+                    if (btn === correctBtn) {
+                        console.log('win');
+                        nextLevel();
+                    } else {
+                        alert('game over');
+                        gridSize = 2;
+                        levelCount = 0;
+                        nextLevel();
+                    }
+
+                });
+
+            });
+        };
+
+        function nextLevel() {
+            createBtns(gridSize);
+            selectBtn();
+            addListener();
+            levelCount++;
+            // the btn numbers increases every 5 round
+            if (levelCount % 4 === 0) {
+                gridSize++;
+                // levelCount = 0;
+            }
+        }
+
+        
+
+        nextLevel();
+
+    </script>
+
+</body>
+
+</html>
